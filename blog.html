@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.20/vue.min.js" ></script>
+</head>
+<body>
+  <div class="container">
+    <div id="tasks">
+      <div>
+        <a href="http://timhieumaytinh.com/khoa-hoc/"><img src="http://timhieumaytinh.com/wp-content/uploads/2015/11/THMT-Logo-340x100.png"></a>
+        <h2 v-show="remaining.length">Nhiệm Vụ Mới ({{remaining.length}})</h2>
+
+        <ol class="list-group">
+          <li v-for="task in tasks | inProcess" class="list-group-item">
+            <span @dblclick="editTask(task)">{{task.body}}</span>
+            <button @click="removeTask(task)">&#10007;</button>
+            <button @click="completeTask(task)">&#10004;</button>
+          </li>
+        </ol>
+      </div>
+
+      <form @submit="addTask">
+        <div class="form-group">
+          <input v-el:newtask v-model="newTask" class="form-control" placeholder="Tôi muốn...">
+        </div>
+        <button class="btn btn-primary" type="submit">Thêm Nhiệm Vụ</button>
+        <button class="btn btn-success" @click="completeAll" type="button" name="button">Hoàn thành hết?</button>
+      </form>
+
+      <div v-if="completions.length">
+        <h2>Đã hoàn thành ({{ completions.length}})</h2>
+        <ol class="list-group">
+          <li v-for="task in tasks | filterBy true in 'completed'" class="list-group-item">
+            <span>{{task.body}}
+            <button @click="toggleCompleteTask(task)">&#10007;</button>
+          </li>
+          <hr>
+          <button class="btn btn-danger" @click="clearCompleted">Xóa nhiệm vụ đã hoàn thành?</button>
+        </ol>
+      </div>
+      <hr>
+      <pre> {{$data | json}} </pre>
+    </div>
+  </div>
+  <script src="apps.js"></script>
+</body>
+</html>
